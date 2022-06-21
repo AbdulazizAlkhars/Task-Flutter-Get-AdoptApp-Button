@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    List<Pet> pets = Provider.of<PetsProvider>(context, listen: false).pets;
+    List<Pet> pets = Provider.of<PetsProvider>(context, listen: true).pets;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pet Adopt"),
@@ -21,7 +21,9 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<PetsProvider>().getPetsProviders();
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(12.0),
                   child: Text("Get All pets"),
@@ -31,9 +33,7 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                onPressed: () {
-                  context.read<PetsProvider>().getPetsProviders();
-                },
+                onPressed: () {},
                 child: const Padding(
                   padding: EdgeInsets.all(12.0),
                   child: Text("Add a new Pet"),
