@@ -15,4 +15,11 @@ class PetsProvider extends ChangeNotifier {
     pets = await PetsServices().getPetsService();
     notifyListeners();
   }
+
+  void addPetsProviders(Pet pet) async {
+    pets = await PetsServices().addPetsService(
+      pet
+    );
+    notifyListeners();
+  }
 }
