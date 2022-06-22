@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    List<Pet> pets = Provider.of<PetsProvider>(context, listen: true).pets;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pet Adopt"),
@@ -18,18 +18,18 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<PetsProvider>().getPetsProviders();
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text("Get All pets"),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       context.read<PetsProvider>().getPetsProviders();
+            //     },
+            //     child: const Padding(
+            //       padding: EdgeInsets.all(12.0),
+            //       child: Text("Get All pets"),
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
@@ -42,16 +42,30 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: MediaQuery.of(context).size.width /
-                      (MediaQuery.of(context).size.height),
-                ),
-                physics: const NeverScrollableScrollPhysics(), // <- Here
-                itemCount: pets.length,
-                itemBuilder: (context, index) => PetCard(pet: pets[index])),
+            FutureBuilder(
+                future: context.read<PetsProvider>().getPetsProvidersonOpen(),
+                builder: ((context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text("Network Error");
+                  } else {
+                    List<Pet> pets =
+                        Provider.of<PetsProvider>(context, listen: true).pets;
+                    return GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height),
+                        ),
+                        physics:
+                            const NeverScrollableScrollPhysics(), // <- Here
+                        itemCount: pets.length,
+                        itemBuilder: (context, index) =>
+                            PetCard(pet: pets[index]));
+                  }
+                })),
           ],
         ),
       ),

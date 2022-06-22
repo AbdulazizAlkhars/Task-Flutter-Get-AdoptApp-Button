@@ -8,18 +8,22 @@ class PetsProvider extends ChangeNotifier {
         name: "Lucifurr",
         image: "https://i.ibb.co/P6VJ4pZ/smile-cat-1.png",
         age: 2,
-        gender: "male")
+        gender: "male"
+        )
   ];
-
-  void getPetsProviders() async {
+  Future<void> getPetsProvidersonOpen() async {
     pets = await PetsServices().getPetsService();
+    print("Hello");
+    
+  }
+  Future<void> getPetsProviders() async {
+    pets = await PetsServices().getPetsService();
+    print("Hello");
     notifyListeners();
   }
 
   void addPetsProviders(Pet pet) async {
-    pets = await PetsServices().addPetsService(
-      pet
-    );
+    pets = await PetsServices().addPetsService(pet);
     notifyListeners();
   }
 }

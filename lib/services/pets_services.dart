@@ -16,7 +16,8 @@ class PetsServices {
   }
 
   Future<List<Pet>> addPetsService(Pet pet) async {
-    var req = await _dio.post("https://coded-pets-api-crud.herokuapp.com/pets", data: pet.toJson());
+    var req = await _dio.post("https://coded-pets-api-crud.herokuapp.com/pets",
+        data: pet.toJson());
 
     pets = (req.data as List).map((e) => Pet.fromJson(e)).toList();
 
