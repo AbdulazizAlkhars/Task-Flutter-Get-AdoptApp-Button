@@ -1,17 +1,17 @@
 import 'package:adopt_app/pages/addpet.dart';
+import 'package:adopt_app/pages/adduser.dart';
 import 'package:adopt_app/pages/home_page.dart';
+import 'package:adopt_app/providers/authprovider.dart';
 import 'package:adopt_app/providers/pets_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => PetsProvider(),
-      child: MyApp(),
-    ),
-  );
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<PetsProvider>(create: (_) => PetsProvider()),
+    ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,6 +34,10 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/w',
         builder: (context, state) => const AddPet(),
+      ),
+      GoRoute(
+        path: '/user',
+        builder: (context, state) => const AddUser(),
       ),
     ],
   );

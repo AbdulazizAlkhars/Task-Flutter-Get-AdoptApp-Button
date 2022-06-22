@@ -21,7 +21,7 @@ class PetsServices {
 
     pets = (req.data as List).map((e) => Pet.fromJson(e)).toList();
 
-    print("Network Error");
+    // print("Network Error");
 
     return pets;
   }
