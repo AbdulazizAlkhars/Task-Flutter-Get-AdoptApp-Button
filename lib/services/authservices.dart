@@ -1,18 +1,31 @@
 import 'package:adopt_app/models/user.dart';
+import 'package:adopt_app/services/clients.dart';
 import 'package:dio/dio.dart';
 
 class AuthServices {
-  final _dio = Dio();
-
-  Future<void> signup(User user) async {
-    late String token;
+  Future<String> signup(User user) async {
+    String token = "";
     try {
-      Response res = await _dio.post(
-          "https://coded-pets-api-auth.herokuapp.com/signup",
-          data: user.toJson());
+      Response res = await Client.dio.post("/signup", data: user.toJson());
       print(res.data["token"]);
+      token = res.data["token"];
     } on DioError catch (error) {
-      print("error");
+      print(error.message);
     }
+
+    return token;
+  }
+
+  Future<String> signin(User user) async {
+    String token = "";
+    try {
+      Response res = await Client.dio.post("/signup", data: user.toJson());
+      print(res.data["token"]);
+      token = res.data["token"];
+    } on DioError catch (error) {
+      print(error.message);
+    }
+
+    return token;
   }
 }

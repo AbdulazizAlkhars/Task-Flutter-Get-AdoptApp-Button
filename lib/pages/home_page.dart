@@ -1,4 +1,6 @@
 import 'package:adopt_app/models/pet.dart';
+import 'package:adopt_app/models/user.dart';
+import 'package:adopt_app/providers/authprovider.dart';
 import 'package:adopt_app/providers/pets_provider.dart';
 import 'package:adopt_app/widgets/pet_card.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +14,37 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-          child: ListView(
-        children: [
-          ListTile(
-            title: Text("SignUp"),
-            trailing: Icon(Icons.login),
-            onTap: () {
-              context.push('/user');
-            },
-          )
-        ],
-      )),
+          child: Consumer<UserProvider>(
+              builder: (context, auth, child) => auth.isAuth
+                  ? ListView(
+                      children: [
+                        ListTile(
+                          title: Text("Hello ${auth.user?.username}"),
+                          trailing: Icon(Icons.logout),
+                          onTap: () {
+                            auth.logOut();
+                          },
+                        ),
+                      ],
+                    )
+                  : ListView(
+                      children: [
+                        ListTile(
+                          title: Text("SignUp"),
+                          trailing: Icon(Icons.login),
+                          onTap: () {
+                            context.push('/user');
+                          },
+                        ),
+                        ListTile(
+                          title: Text("SignIn"),
+                          trailing: Icon(Icons.how_to_reg),
+                          onTap: () {
+                            context.push('/signin');
+                          },
+                        ),
+                      ],
+                    ))),
       appBar: AppBar(
         title: const Text("Pet Adopt"),
       ),
